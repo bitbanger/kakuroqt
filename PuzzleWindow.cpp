@@ -2,16 +2,21 @@
 
 #include <iostream>
 
-#include <QPushButton>
+#include <QComboBox>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QStringListModel>
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <string>
+
 using namespace std;
 
-PuzzleWindow::PuzzleWindow() {
+PuzzleWindow::PuzzleWindow() : model(new QStringListModel(this)) {
 	// Set up main layout
 	mainLayout = new QVBoxLayout;
 	
@@ -27,6 +32,8 @@ PuzzleWindow::PuzzleWindow() {
 	solveButton = new QPushButton("Solve", this);
 	resetButton = new QPushButton("Reset", this);
 	undoButton = new QPushButton("Undo", this);
+	
+	connect(loadButton, SIGNAL(clicked()), this, SLOT(loadSlot()));
 	
 	buttonLayout->addWidget(loadButton);
 	buttonLayout->addWidget(checkButton);
@@ -53,10 +60,38 @@ PuzzleWindow::PuzzleWindow() {
 	setWindowTitle("Kakuro");
 }
 
-void PuzzleWindow::slotButton1() {
-	cout << "Button 1 hit!" << endl;
+void PuzzleWindow::loadSlot() {
+	QMessageBox::information(this, "title", "info");
+	
+	QStringList list;
+	list << "2";
+	
+	model->setStringList(list);
+	
+	for(int i = 0; i < 3; ++i) {
+		for(int j = 0; j < 3; ++j) {
+			QComboBox* box = new QComboBox;
+			box->setModel(model);
+			gridLayout->addWidget(box, i, j);
+		}
+	}
+}
+void PuzzleWindow::checkSlot() {
+	QMessageBox::information(this, "title", "info");
+}
+void PuzzleWindow::hintSlot() {
+	QMessageBox::information(this, "title", "info");
 }
 
-void PuzzleWindow::slotButton2() {
-	cout << "Button 2 hit!" << endl;
+void PuzzleWindow::solveSlot() {
+	QMessageBox::information(this, "title", "info");
 }
+
+void PuzzleWindow::resetSlot() {
+	QMessageBox::information(this, "title", "info");
+}
+
+void PuzzleWindow::undoSlot() {
+	QMessageBox::information(this, "title", "info");
+}
+
