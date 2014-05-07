@@ -18,6 +18,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <fstream>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -126,16 +127,28 @@ void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
 }
 
 void PuzzleWindow::loadSlot() {
-	QMessageBox::information(this, "title", "info");
+	string filename = QFileDialog::getOpenFileName(this, "Open File", "", "Input Files (*.*)").toStdString();
+	
+	fstream file;
+	file.open(filename);
+	
+	// TODO: also check if the config is valid
+	if(!file.good()) {
+		file.close();
+		return;
+	}
+	
+	file.close();
+	
+	currentConfig = make_shared<KakuroConfig>(filename);
+	
+	this->displayKakuroConfig(*currentConfig);
 }
 
 void PuzzleWindow::checkSlot() {
-	QString filename = QFileDialog::getOpenFileName(this, "Open File", "", "Files (*.*)");
-	currentConfig = make_shared<KakuroConfig>(filename.toStdString());
-	// QMessageBox::information(this, "title", filename);
-	cout << *currentConfig << endl;
-	this->displayKakuroConfig(*currentConfig);
+	QMessageBox::information(this, "title", "info");
 }
+
 void PuzzleWindow::hintSlot() {
 	QMessageBox::information(this, "title", "info");
 }
