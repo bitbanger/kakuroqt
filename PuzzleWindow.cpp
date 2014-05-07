@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <QComboBox>
+#include <QFileDialog>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -34,6 +35,11 @@ PuzzleWindow::PuzzleWindow() : model(new QStringListModel(this)) {
 	undoButton = new QPushButton("Undo", this);
 	
 	connect(loadButton, SIGNAL(clicked()), this, SLOT(loadSlot()));
+	connect(checkButton, SIGNAL(clicked()), this, SLOT(checkSlot()));
+	connect(hintButton, SIGNAL(clicked()), this, SLOT(hintSlot()));
+	connect(solveButton, SIGNAL(clicked()), this, SLOT(solveSlot()));
+	connect(resetButton, SIGNAL(clicked()), this, SLOT(resetSlot()));
+	connect(undoButton, SIGNAL(clicked()), this, SLOT(undoSlot()));
 	
 	buttonLayout->addWidget(loadButton);
 	buttonLayout->addWidget(checkButton);
@@ -77,7 +83,8 @@ void PuzzleWindow::loadSlot() {
 	}
 }
 void PuzzleWindow::checkSlot() {
-	QMessageBox::information(this, "title", "info");
+	QString filename = QFileDialog::getOpenFileName(this, "Open File", "", "Files (*.*)");
+	QMessageBox::information(this, "title", filename);
 }
 void PuzzleWindow::hintSlot() {
 	QMessageBox::information(this, "title", "info");
