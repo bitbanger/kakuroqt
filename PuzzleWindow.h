@@ -1,20 +1,28 @@
 #ifndef PUZZLE_H
 #define PUZZLE_H
 
+#include "KakuroConfig.h"
 
-#include <QPushButton>
 #include <QGridLayout>
+#include <QGroupBox>
+#include <QPushButton>
 #include <QStringListModel>
 #include <QVBoxLayout>
 #include <QWidget>
+
+#include <memory>
 
 class PuzzleWindow : public QWidget {
 	Q_OBJECT
 	
 	private:
-		QStringListModel* model;
+		QStringListModel* comboModel;
+		QStringList* comboList;
 		
 		QVBoxLayout* mainLayout;
+		
+		QGroupBox* buttonBox;
+		QGroupBox* gridBox;
 		
 		QGridLayout* gridLayout;
 		
@@ -24,6 +32,12 @@ class PuzzleWindow : public QWidget {
 		QPushButton* solveButton;
 		QPushButton* resetButton;
 		QPushButton* undoButton;
+	
+	private:
+		std::shared_ptr<KakuroConfig> currentConfig;
+	
+	private:
+		void displayKakuroConfig(const KakuroConfig& c);
 	
 	private slots:
 		void loadSlot();

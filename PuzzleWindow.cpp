@@ -1,28 +1,47 @@
+#include "Cell.h"
+#include "KakuroConfig.h"
 #include "PuzzleWindow.h"
 
 #include <iostream>
 
+#include <QApplication>
 #include <QComboBox>
 #include <QFileDialog>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QSizePolicy>
 #include <QStringListModel>
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <memory>
+#include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-PuzzleWindow::PuzzleWindow() : model(new QStringListModel(this)) {
+PuzzleWindow::PuzzleWindow() : comboModel(new QStringListModel(this)) {
 	// Set up main layout
 	mainLayout = new QVBoxLayout;
 	
+	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	
+	// Set up the combobox model
+	comboList = new QStringList;
+	*comboList << QString("-");
+	for(int i = 1; i <= 9; ++i) {
+		*comboList << QString(to_string(i).c_str());
+	}
+	
+	comboModel->setStringList(*comboList);
+	
 	// Set up a horizontal layout for the buttons
-	QGroupBox* buttonBox = new QGroupBox;
+	buttonBox = new QGroupBox;
 	
 	QHBoxLayout* buttonLayout = new QHBoxLayout;
 	
@@ -51,7 +70,7 @@ PuzzleWindow::PuzzleWindow() : model(new QStringListModel(this)) {
 	buttonBox->setLayout(buttonLayout);
 	
 	// Initialize the grid
-	QGroupBox* gridBox = new QGroupBox;
+	gridBox = new QGroupBox;
 	
 	gridLayout = new QGridLayout;
 	
@@ -66,25 +85,56 @@ PuzzleWindow::PuzzleWindow() : model(new QStringListModel(this)) {
 	setWindowTitle("Kakuro");
 }
 
-void PuzzleWindow::loadSlot() {
-	QMessageBox::information(this, "title", "info");
+void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
+	while(gridLayout->count() > 0) {
+		QWidget* widget = gridLayout->itemAt(0)->widget();
+		gridLayout->removeWidget(widget);
+		delete widget;
+	}
 	
-	QStringList list;
-	list << "2";
+	delete gridLayout;
+	gridLayout = new QGridLayout;
+	gridBox->setLayout(gridLayout);
 	
-	model->setStringList(list);
-	
-	for(int i = 0; i < 3; ++i) {
-		for(int j = 0; j < 3; ++j) {
-			QComboBox* box = new QComboBox;
-			box->setModel(model);
-			gridLayout->addWidget(box, i, j);
+	vector<vector<Cell>> board = c.getBoard();
+	for(unsigned int i = 0; i < board.size(); ++i) {
+		for(unsigned int j = 0; j < board.at(0).size(); ++j) {
+			Cell& c = board.at(i).at(j);
+			
+			if(c.isValueCell()) {
+				QComboBox* combo = new QComboBox;
+				combo->setModel(comboModel);
+				combo->setCurrentIndex(c.value());
+				gridLayout->addWidget(combo, i, j);
+			} else {
+				ostringstream oss;
+				oss << c;
+				gridLayout->addWidget(new QLabel(QString(oss.str().c_str())), i, j);
+			}
+			
+			
+			// gridLayout->addWidget(new QLabel(QString(oss.str().c_str())), i, j);
 		}
 	}
+	
+	// this->resize(this->sizeHint());
+	// this->resize(this->height(), this->minimumWidth());
+	// this->adjustSize();
+	QApplication::processEvents();
+	
+	this->resize(0, 0);
 }
+
+void PuzzleWindow::loadSlot() {
+	QMessageBox::information(this, "title", "info");
+}
+
 void PuzzleWindow::checkSlot() {
 	QString filename = QFileDialog::getOpenFileName(this, "Open File", "", "Files (*.*)");
-	QMessageBox::information(this, "title", filename);
+	currentConfig = make_shared<KakuroConfig>(filename.toStdString());
+	// QMessageBox::information(this, "title", filename);
+	cout << *currentConfig << endl;
+	this->displayKakuroConfig(*currentConfig);
 }
 void PuzzleWindow::hintSlot() {
 	QMessageBox::information(this, "title", "info");
