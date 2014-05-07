@@ -14,8 +14,12 @@ class PuzzleWindow : public QWidget {
 		
 		QGridLayout* gridLayout;
 		
-		QPushButton* button1;
-		QPushButton* button2;
+		QPushButton* loadButton;
+		QPushButton* checkButton;
+		QPushButton* hintButton;
+		QPushButton* solveButton;
+		QPushButton* resetButton;
+		QPushButton* undoButton;
 	
 	private slots:
 		void slotButton1();
