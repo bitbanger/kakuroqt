@@ -107,21 +107,17 @@ void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
 				QComboBox* combo = new QComboBox;
 				combo->setModel(comboModel);
 				combo->setCurrentIndex(c.value());
+				connect(combo, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxUpdatedSlot(int)));
 				gridLayout->addWidget(combo, i, j);
 			} else {
 				ostringstream oss;
 				oss << c;
 				gridLayout->addWidget(new QLabel(QString(oss.str().c_str())), i, j);
 			}
-			
-			
-			// gridLayout->addWidget(new QLabel(QString(oss.str().c_str())), i, j);
 		}
 	}
 	
-	// this->resize(this->sizeHint());
-	// this->resize(this->height(), this->minimumWidth());
-	// this->adjustSize();
+	// QMessageBox::information(this, "title", "info");
 	QApplication::processEvents();
 	
 	this->resize(0, 0);
@@ -175,7 +171,6 @@ void PuzzleWindow::loadSlot() {
 }
 
 void PuzzleWindow::checkSlot() {
-	// QMessageBox::information(this, "title", "info");
 	string msg = (isSolvable() ? "Solvable!" : "Not solvable :(");
 	
 	QMessageBox::information(this, "Solvable?", QString(msg.c_str()));
@@ -196,5 +191,9 @@ void PuzzleWindow::resetSlot() {
 
 void PuzzleWindow::undoSlot() {
 	QMessageBox::information(this, "title", "info");
+}
+
+void PuzzleWindow::comboBoxUpdatedSlot(int newIndex) {
+	currentConfig = make_shared<KakuroConfig>(configFromDisplay());
 }
 

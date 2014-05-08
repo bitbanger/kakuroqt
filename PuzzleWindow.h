@@ -50,6 +50,8 @@ class PuzzleWindow : public QWidget {
 		void resetSlot();
 		void undoSlot();
 		
+		void comboBoxUpdatedSlot(int newIndex);
+		
 	public:
 		PuzzleWindow();
 };
