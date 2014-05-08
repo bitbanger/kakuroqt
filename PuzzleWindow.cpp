@@ -1,6 +1,7 @@
 #include "Cell.h"
 #include "KakuroConfig.h"
 #include "PuzzleWindow.h"
+#include "Solver.h"
 
 #include <iostream>
 
@@ -126,6 +127,28 @@ void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
 	this->resize(0, 0);
 }
 
+KakuroConfig PuzzleWindow::configFromDisplay() {
+	vector<vector<Cell>> currentBoard = currentConfig->getBoard();	
+	int cols = currentBoard.size();
+	int rows = currentBoard.at(0).size();
+	
+	vector<vector<Cell>> newBoard(cols, vector<Cell>());
+	
+	for(int i = 0; i < cols; ++i) {
+		for(int j = 0; j < rows; ++j) {
+			if(currentBoard.at(i).at(j).isValueCell()) {
+				QComboBox* combo = (QComboBox*)(gridLayout->itemAtPosition(i, j)->widget());
+				int gridVal = combo->currentIndex();
+				newBoard.at(i).push_back(gridVal);
+			} else {
+				newBoard.at(i).push_back(currentBoard.at(i).at(j));
+			}
+		}
+	}
+	
+	return KakuroConfig(newBoard, false);
+}
+
 void PuzzleWindow::loadSlot() {
 	string filename = QFileDialog::getOpenFileName(this, "Open File", "", "Input Files (*.*)").toStdString();
 	
@@ -146,7 +169,9 @@ void PuzzleWindow::loadSlot() {
 }
 
 void PuzzleWindow::checkSlot() {
-	QMessageBox::information(this, "title", "info");
+	// QMessageBox::information(this, "title", "info");
+	KakuroConfig c = configFromDisplay();
+	cout << c << endl;
 }
 
 void PuzzleWindow::hintSlot() {

@@ -38,6 +38,7 @@ class PuzzleWindow : public QWidget {
 	
 	private:
 		void displayKakuroConfig(const KakuroConfig& c);
+		KakuroConfig configFromDisplay();
 	
 	private slots:
 		void loadSlot();
