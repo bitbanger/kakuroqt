@@ -177,8 +177,27 @@ void PuzzleWindow::checkSlot() {
 }
 
 void PuzzleWindow::hintSlot() {
-	KakuroConfig c = configFromDisplay();
-	cout << c << endl;
+	// KakuroConfig c = configFromDisplay();
+	cout << "solving: " << endl;
+	cout << *currentConfig << endl;
+	
+	Solver<KakuroConfig> solver(currentConfig);
+	
+	for(shared_ptr<KakuroConfig> conf : solver.getSolutionPath()) {
+		cout << *conf << endl;
+	}
+	
+	if(solver.isFailure()) {
+		QMessageBox::information(this, "Invalid", "The current puzzle cannot reach a solution. Why not try another approach?");
+	} else {
+		vector<shared_ptr<KakuroConfig>> path = solver.getSolutionPath();
+		
+		currentConfig = path.at(path.size() - 2);
+		
+		currentConfig->setParent(nullptr);
+		
+		displayKakuroConfig(*currentConfig);
+	}
 }
 
 void PuzzleWindow::solveSlot() {
