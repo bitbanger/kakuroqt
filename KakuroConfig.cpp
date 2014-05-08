@@ -207,6 +207,39 @@ KakuroConfig::KakuroConfig(string filename) : m_isGoal(false), m_parent(nullptr)
 	file.close();
 	
 	m_board = board;
+	
+	// If our root config is the goal, don't do any more work
+	if(slowIsGoal()) {
+		m_isGoal = true;
+		return;
+	}
+	
+	// Compute initial possible values for all cells
+	
+	// The possible values for a cell are 
+	// the intersection of the integer partition sets 
+	// of each dimensional neighbor group with target sums 
+	// determined by the sum cells
+	for(int i = 0; i < m_board.size(); ++i) {
+		for(int j = 0; j < m_board.size(); ++j) {
+			Cell& cursor = m_board[i][j];
+			
+			if(cursor.isValueCell()) {
+				// Do two walks, horizontally and vertically
+				// Count the number of peers and establish target sums
+				// Then intersect possible values
+				
+				int horPtr(j), verPtr(i);
+				
+				array<bool, 9> horPossibles = availableValues(m_board, i, j, false);
+				array<bool, 9> verPossibles = availableValues(m_board, i, j, false);
+				
+				array<bool, 9> cellPossibles = Partitioner::getInstance().intersection(horPossibles, verPossibles);
+				
+				cursor.setPossibleValues(cellPossibles);
+			}
+		}
+	}
 }
 
 bool KakuroConfig::isGoal() const {

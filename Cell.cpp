@@ -83,3 +83,13 @@ ostream& operator<<(ostream& os, const Cell& c) {
 	return os;
 }
 
+bool Cell::operator==(const Cell& other) const {
+	if(m_isValueCell) {
+		return other.m_isValueCell && (other.m_value == m_value);
+	} else {
+		return !other.m_isValueCell && (other.m_downSum == m_downSum) && (other.m_rightSum == m_rightSum);
+	}
+	
+	return false;
+}
+

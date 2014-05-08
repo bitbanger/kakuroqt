@@ -149,15 +149,21 @@ KakuroConfig PuzzleWindow::configFromDisplay() {
 	return KakuroConfig(newBoard, false);
 }
 
+bool PuzzleWindow::isSolvable() {
+	Solver<KakuroConfig> solver(currentConfig);
+	
+	return !solver.isFailure();
+}
+
 void PuzzleWindow::loadSlot() {
 	string filename = QFileDialog::getOpenFileName(this, "Open File", "", "Input Files (*.*)").toStdString();
 	
 	fstream file;
 	file.open(filename);
 	
-	// TODO: also check if the config is valid
 	if(!file.good()) {
 		file.close();
+		QMessageBox::information(this, "File Loading Error", "Couldn't load the file. Sorry about that!");
 		return;
 	}
 	
@@ -170,12 +176,14 @@ void PuzzleWindow::loadSlot() {
 
 void PuzzleWindow::checkSlot() {
 	// QMessageBox::information(this, "title", "info");
-	KakuroConfig c = configFromDisplay();
-	cout << c << endl;
+	string msg = (isSolvable() ? "Solvable!" : "Not solvable :(");
+	
+	QMessageBox::information(this, "Solvable?", QString(msg.c_str()));
 }
 
 void PuzzleWindow::hintSlot() {
-	QMessageBox::information(this, "title", "info");
+	KakuroConfig c = configFromDisplay();
+	cout << c << endl;
 }
 
 void PuzzleWindow::solveSlot() {

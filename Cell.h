@@ -68,6 +68,7 @@ class Cell {
 	public:
 		// Output operator
 		friend std::ostream& operator<<(std::ostream& os, const Cell& c);
+		bool operator==(const Cell& other) const;
 };
 
 #endif
