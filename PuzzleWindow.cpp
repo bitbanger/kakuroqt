@@ -192,6 +192,11 @@ void PuzzleWindow::hintSlot() {
 	} else {
 		vector<shared_ptr<KakuroConfig>> path = solver.getSolutionPath();
 		
+		if(path.size() == 1) {
+			QMessageBox::information(this, "Invalid", "No hints available; you already won!");
+			return;
+		}
+		
 		currentConfig = path.at(path.size() - 2);
 		
 		currentConfig->setParent(nullptr);
@@ -201,7 +206,17 @@ void PuzzleWindow::hintSlot() {
 }
 
 void PuzzleWindow::solveSlot() {
-	QMessageBox::information(this, "title", "info");
+	// QMessageBox::information(this, "title", "info");
+	Solver<KakuroConfig> solver(currentConfig);
+	
+	if(solver.isFailure()) {
+		// TODO: implement a zeroed config to base the "pure" solution from"
+	} else {
+		currentConfig = solver.getSolutionPath().front();
+		displayKakuroConfig(*currentConfig);
+		// currentConfig = solver.getSolutionPath().front();
+		currentConfig->setParent(nullptr);
+	}
 }
 
 void PuzzleWindow::resetSlot() {
