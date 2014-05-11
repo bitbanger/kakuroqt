@@ -14,9 +14,9 @@
 
 using namespace std;
 
-Cell::Cell(int value) : 
+Cell::Cell(int value, bool isFixed = false) : 
 	m_isValueCell(true), m_value(value), m_rightSum(-1), 
-	m_downSum(-1), m_numPossibleValues(-1) {}
+	m_downSum(-1), m_numPossibleValues(-1), m_isFixed(isFixed) {}
 
 Cell::Cell(int downSum, int rightSum) : 
 	m_isValueCell(false), m_value(-1), m_rightSum(rightSum), 
@@ -29,6 +29,10 @@ bool Cell::isValueCell() const {
 // For value cells
 int Cell::value() const {
 	return m_value;
+}
+
+bool Cell::isFixed() const {
+	return m_isFixed;
 }
 
 int Cell::numPossibleValues() {

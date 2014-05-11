@@ -197,7 +197,8 @@ KakuroConfig::KakuroConfig(string filename) : m_isGoal(false), m_parent(nullptr)
 				Cell ruleCell(rules[0], rules[1]);
 				board[i].push_back(ruleCell);
 			} else {
-				Cell valCell(atoi(cell.c_str()));
+				int val = atoi(cell.c_str());
+				Cell valCell(val, val > 0);
 				board[i].push_back(valCell);
 			}
 
@@ -285,7 +286,7 @@ vector<shared_ptr<KakuroConfig>> KakuroConfig::getSuccessors() {
 		shared_ptr<KakuroConfig> succ = make_shared<KakuroConfig>(*this);
 			
 		// Change the candidate cell to the candidate value
-		succ->m_board[fewestVer][fewestHor] = candVal;
+		succ->m_board[fewestVer][fewestHor] = Cell(candVal, m_board[fewestVer][fewestHor].isFixed());
 		
 		// Update delta metadata for better printouts
 		succ->m_deltaI = fewestVer;

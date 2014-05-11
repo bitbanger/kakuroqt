@@ -30,6 +30,7 @@ class KakuroConfig {
 		int m_deltaI, m_deltaJ;
 		bool m_isGoal;
 		bool m_shouldDelta;
+		bool m_isDefault;
 		
 		std::vector<std::vector<Cell>> m_board;
 		std::shared_ptr<KakuroConfig> m_parent;

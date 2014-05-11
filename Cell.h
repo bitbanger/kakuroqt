@@ -24,6 +24,7 @@ class Cell {
 		int m_value;
 		int m_numPossibleValues;
 		std::array<bool, 9> m_possibleValues;
+		bool m_isFixed;
 		
 		// For sum cells
 		int m_rightSum;
@@ -31,7 +32,7 @@ class Cell {
 	
 	public:
 		// Constructor for value cells
-		Cell(int value);
+		Cell(int value, bool isFixed);
 		
 		// Constructor for sum cells
 		// 0 values mean no restriction
@@ -44,6 +45,9 @@ class Cell {
 		
 		// Current value of the cell
 		int value() const;
+		
+		// Whether or not the cell is pre-set on loading
+		bool isFixed() const;
 		
 		// The number of possible values for the cell
 		int numPossibleValues();

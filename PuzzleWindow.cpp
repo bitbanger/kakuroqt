@@ -104,6 +104,11 @@ void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
 				QComboBox* combo = new QComboBox;
 				combo->setModel(comboModel);
 				combo->setCurrentIndex(c.value());
+				
+				if(c.isFixed()) {
+					combo->setEnabled(false);
+				}
+				
 				connect(combo, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxUpdatedSlot()));
 				gridLayout->addWidget(combo, i, j);
 			} else {
@@ -131,7 +136,7 @@ KakuroConfig PuzzleWindow::configFromDisplay() {
 			if(currentBoard.at(i).at(j).isValueCell()) {
 				QComboBox* combo = (QComboBox*)(gridLayout->itemAtPosition(i, j)->widget());
 				int gridVal = combo->currentIndex();
-				newBoard.at(i).push_back(gridVal);
+				newBoard.at(i).push_back(Cell(gridVal, combo->isEnabled()));
 			} else {
 				newBoard.at(i).push_back(currentBoard.at(i).at(j));
 			}
