@@ -136,7 +136,7 @@ KakuroConfig PuzzleWindow::configFromDisplay() {
 			if(currentBoard.at(i).at(j).isValueCell()) {
 				QComboBox* combo = (QComboBox*)(gridLayout->itemAtPosition(i, j)->widget());
 				int gridVal = combo->currentIndex();
-				newBoard.at(i).push_back(Cell(gridVal, combo->isEnabled()));
+				newBoard.at(i).push_back(Cell(gridVal, !combo->isEnabled()));
 			} else {
 				newBoard.at(i).push_back(currentBoard.at(i).at(j));
 			}
