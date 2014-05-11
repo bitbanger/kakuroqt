@@ -19,7 +19,7 @@
 using namespace std;
 
 array<bool, 9> availableValues(const vector<vector<Cell>>& board, int ver, int hor, bool vertical) {
-	int ptr(vertical ? ver : hor);
+	unsigned ptr(vertical ? ver : hor);
 	
 	while(board.at(vertical ? --ptr : ver).at(vertical ? hor : --ptr).isValueCell());
 	
@@ -49,13 +49,13 @@ array<bool, 9> availableValues(const vector<vector<Cell>>& board, int ver, int h
 }
 
 bool KakuroConfig::slowIsGoal() const {
-	for(int i = 0; i < m_board.size(); ++i) {
-		for(int j = 0; j < m_board.at(0).size(); ++j) {
+	for(unsigned i = 0; i < m_board.size(); ++i) {
+		for(unsigned j = 0; j < m_board.at(0).size(); ++j) {
 			const Cell& c = m_board.at(i).at(j);
 			
 			if(!c.isValueCell()) {
 				if(c.downSum() > 0) {
-					int verPtr(i);
+					unsigned verPtr(i);
 					int sum(0);
 					array<bool, 9> used{};
 					
@@ -79,7 +79,7 @@ bool KakuroConfig::slowIsGoal() const {
 				}
 				
 				if(c.rightSum() > 0) {
-					int horPtr(j);
+					unsigned horPtr(j);
 					int sum(0);
 					array<bool, 9> used{};
 					
@@ -109,7 +109,7 @@ bool KakuroConfig::slowIsGoal() const {
 }
 
 KakuroConfig::KakuroConfig(vector<vector<Cell>> board, bool shouldDelta) : 
-	m_isGoal(false), m_board(board), m_parent(nullptr), m_deltaI(-1), m_deltaJ(-1), m_shouldDelta(shouldDelta) {
+	m_deltaI(0), m_deltaJ(0), m_isGoal(false), m_shouldDelta(shouldDelta), m_board(board), m_parent(nullptr) {
 	// If our root config is the goal, don't do any more work
 	if(slowIsGoal()) {
 		m_isGoal = true;
@@ -122,16 +122,14 @@ KakuroConfig::KakuroConfig(vector<vector<Cell>> board, bool shouldDelta) :
 	// the intersection of the integer partition sets 
 	// of each dimensional neighbor group with target sums 
 	// determined by the sum cells
-	for(int i = 0; i < m_board.size(); ++i) {
-		for(int j = 0; j < m_board.size(); ++j) {
+	for(unsigned i = 0; i < m_board.size(); ++i) {
+		for(unsigned j = 0; j < m_board.size(); ++j) {
 			Cell& cursor = m_board[i][j];
 			
 			if(cursor.isValueCell()) {
 				// Do two walks, horizontally and vertically
 				// Count the number of peers and establish target sums
 				// Then intersect possible values
-				
-				int horPtr(j), verPtr(i);
 				
 				array<bool, 9> horPossibles = availableValues(m_board, i, j, false);
 				array<bool, 9> verPossibles = availableValues(m_board, i, j, false);
@@ -161,7 +159,7 @@ vector<int> splitRuleCell(const string& str) {
 	return result;
 }
 
-KakuroConfig::KakuroConfig(string filename) : m_isGoal(false), m_parent(nullptr), m_deltaI(-1), m_deltaJ(-1), m_shouldDelta(false) {
+KakuroConfig::KakuroConfig(string filename) : m_deltaI(0), m_deltaJ(0), m_isGoal(false), m_shouldDelta(false), m_parent(nullptr) {
 	fstream file;
 	file.open(filename);
 	
@@ -221,16 +219,14 @@ KakuroConfig::KakuroConfig(string filename) : m_isGoal(false), m_parent(nullptr)
 	// the intersection of the integer partition sets 
 	// of each dimensional neighbor group with target sums 
 	// determined by the sum cells
-	for(int i = 0; i < m_board.size(); ++i) {
-		for(int j = 0; j < m_board.size(); ++j) {
+	for(unsigned i = 0; i < m_board.size(); ++i) {
+		for(unsigned j = 0; j < m_board.size(); ++j) {
 			Cell& cursor = m_board[i][j];
 			
 			if(cursor.isValueCell()) {
 				// Do two walks, horizontally and vertically
 				// Count the number of peers and establish target sums
 				// Then intersect possible values
-				
-				int horPtr(j), verPtr(i);
 				
 				array<bool, 9> horPossibles = availableValues(m_board, i, j, false);
 				array<bool, 9> verPossibles = availableValues(m_board, i, j, false);
@@ -253,12 +249,12 @@ vector<shared_ptr<KakuroConfig>> KakuroConfig::getSuccessors() {
 	// PHASE 1: 
 	// Find the cell with the fewest possible values; this will be the mutated cell for our next branch
 	int competitors(0);
-	int fewestHor(0), fewestVer(0);
+	unsigned fewestHor(0), fewestVer(0);
 	int fewestNum(-1);
 	array<bool, 9> values{};
 	
-	for(int i = 0; i < m_board.size(); ++i) {
-		for(int j = 0; j < m_board[0].size(); ++j) {
+	for(unsigned i = 0; i < m_board.size(); ++i) {
+		for(unsigned j = 0; j < m_board[0].size(); ++j) {
 			Cell& candidate = m_board.at(i).at(j);
 			if(candidate.value() == 0) {
 				++competitors;
@@ -303,7 +299,7 @@ vector<shared_ptr<KakuroConfig>> KakuroConfig::getSuccessors() {
 		}
 		
 		// First, find the sum cells that initiate the group
-		int horPtr(fewestHor), verPtr(fewestVer);
+		unsigned horPtr(fewestHor), verPtr(fewestVer);
 		
 		while(succ->m_board[fewestVer][--horPtr].isValueCell());
 		while(succ->m_board[--verPtr][fewestHor].isValueCell());
@@ -312,7 +308,7 @@ vector<shared_ptr<KakuroConfig>> KakuroConfig::getSuccessors() {
 		int rightSum = m_board[fewestVer][horPtr].rightSum();
 		
 		// Now count what's already used in each peer group
-		int horPtr2(horPtr), verPtr2(verPtr);
+		unsigned horPtr2(horPtr), verPtr2(verPtr);
 		int numHorPeers(0), numVerPeers(0);
 		array<bool, 9> usedHor{};
 		int curHorSum(0), curVerSum(0);
@@ -381,8 +377,8 @@ vector<vector<Cell>> KakuroConfig::getBoard() const {
 }
 
 ostream& operator<<(ostream& os, const KakuroConfig& c) {
-	for(int i = 0; i < c.m_board.size(); ++i) {
-		for(int j = 0; j < c.m_board[0].size(); ++j) {
+	for(unsigned i = 0; i < c.m_board.size(); ++i) {
+		for(unsigned j = 0; j < c.m_board[0].size(); ++j) {
 			if(c.m_shouldDelta && i == c.m_deltaI && j == c.m_deltaJ) {
 				os << "[" << c.m_board[i][j] << "]" << "\t";
 			} else {
