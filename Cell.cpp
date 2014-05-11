@@ -15,12 +15,10 @@
 using namespace std;
 
 Cell::Cell(int value, bool isFixed = false) : 
-	m_isValueCell(true), m_value(value), m_rightSum(-1), 
-	m_downSum(-1), m_numPossibleValues(-1), m_isFixed(isFixed) {}
+	m_isValueCell(true), m_value(value), m_numPossibleValues(-1), m_isFixed(isFixed), m_rightSum(-1), m_downSum(-1) {}
 
 Cell::Cell(int downSum, int rightSum) : 
-	m_isValueCell(false), m_value(-1), m_rightSum(rightSum), 
-	m_downSum(downSum), m_numPossibleValues(-1) {}
+	m_isValueCell(false), m_value(-1), m_numPossibleValues(-1), m_isFixed(false), m_rightSum(rightSum), m_downSum(downSum) {}
 
 bool Cell::isValueCell() const {
 	return m_isValueCell;
