@@ -34,6 +34,7 @@ class PuzzleWindow : public QWidget {
 		QPushButton* undoButton;
 	
 	private:
+		std::shared_ptr<KakuroConfig> initialConfig;
 		std::shared_ptr<KakuroConfig> currentConfig;
 	
 	private:
