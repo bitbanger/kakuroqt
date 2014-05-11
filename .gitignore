@@ -1,5 +1,6 @@
 .DS_STORE
 .qmake.stash
+puzzlewindow
 Makefile
 *.o
 moc_*
