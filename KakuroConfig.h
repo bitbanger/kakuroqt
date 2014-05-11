@@ -2,7 +2,7 @@
   * KakuroConfig.h
   *
   * Author: Lane Lawley
-  * Date: April 9th, 2014
+  * Date: May 11th, 2014
   *
   * Description: This class represents a configuration of the Kakuro puzzle.
   *		 This configuration is used by the backtracking solver.

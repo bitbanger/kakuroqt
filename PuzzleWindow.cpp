@@ -1,3 +1,13 @@
+/**
+  * PuzzleWindow.cpp
+  *
+  * Author: Lane Lawley
+  * Date: May 11th, 2014
+  *
+  * Description: This is an implementation of PuzzleWindow.h.
+  * 		 For an explanation of the class, please consult that file.
+  */
+
 #include "Cell.h"
 #include "KakuroConfig.h"
 #include "PuzzleWindow.h"
@@ -144,12 +154,6 @@ KakuroConfig PuzzleWindow::configFromDisplay() {
 	}
 	
 	return KakuroConfig(newBoard, false);
-}
-
-bool PuzzleWindow::isSolvable() {
-	Solver<KakuroConfig> solver(currentConfig);
-	
-	return !solver.isFailure();
 }
 
 void PuzzleWindow::loadSlot() {

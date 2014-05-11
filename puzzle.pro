@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = puzzlewindow
+TARGET = Kakuro
 
 SOURCES += main.cpp \
     PuzzleWindow.cpp \
@@ -15,5 +15,9 @@ HEADERS  += \
     Cell.h \
     Partitioner.h \
     Solver.h
+
+ICON = kakuro.icns
+
+CONFIG -= app_bundle
 
 CONFIG += c++11

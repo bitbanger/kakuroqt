@@ -2,7 +2,7 @@
   * Cell.h
   *
   * Author: Lane Lawley
-  * Date: April 9th, 2014
+  * Date: May 11th, 2014
   *
   * Description: This class represents a single cell on the Kakuro puzzle board.
   * 		 A cell is either a sum cell, which dictates the sum of all cells below and/or to the right of it, or a value cell, which contains a value to be summed.

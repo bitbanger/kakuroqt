@@ -2,7 +2,7 @@
   * Partitioner.h
   *
   * Author: Lane Lawley
-  * Date: April 9th, 2014
+  * Date: May 11th, 2014
   *
   * Description: This class is a singleton that's primarily responsible for integer partitioning.
   * 		 Kakuro primarily relies on the ability to find a unique, arbitrary-length combination of numbers that sum to a given value.

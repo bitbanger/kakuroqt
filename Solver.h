@@ -2,7 +2,7 @@
   * Solver.h
   *
   * Author: Lane Lawley
-  * Date: April 9th, 2014
+  * Date: May 11th, 2014
   *
   * Description: This is the generalized backtracking solver.
   *		 It's initialized with a configuration and solved during construction.

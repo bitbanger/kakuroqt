@@ -2,7 +2,7 @@
   * Cell.cpp
   *
   * Author: Lane Lawley
-  * Date: April 9th, 2014
+  * Date: May 11th, 2014
   *
   * Description: This is an implementation of Cell.h.
   * 		 For an explanation of the class, please consult that file.

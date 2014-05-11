@@ -1,3 +1,14 @@
+/**
+  * PuzzleWindow.h
+  *
+  * Author: Lane Lawley
+  * Date: May 11th, 2014
+  *
+  * Description: This class represents the main and solve window of the Kakuro puzzle game.
+  * 		 It contains UI elements to represent an interactive game board.
+  *		 It also contains utility functions for converting UI to config models and vice-versa.
+  */
+
 #ifndef PUZZLE_H
 #define PUZZLE_H
 
@@ -16,16 +27,21 @@ class PuzzleWindow : public QWidget {
 	Q_OBJECT
 	
 	private:
+		// String model information for comboboxes
 		QStringListModel* comboModel;
 		QStringList* comboList;
 		
+		// The window's main layout
 		QVBoxLayout* mainLayout;
 		
+		// Boxes for UI components
 		QGroupBox* buttonBox;
 		QGroupBox* gridBox;
 		
+		// Grid for the game's comboboxes
 		QGridLayout* gridLayout;
 		
+		// All the window's buttons
 		QPushButton* loadButton;
 		QPushButton* checkButton;
 		QPushButton* hintButton;
@@ -33,25 +49,28 @@ class PuzzleWindow : public QWidget {
 		QPushButton* resetButton;
 	
 	private:
+		// Configuration pointers for keeping track of game state
 		std::shared_ptr<KakuroConfig> initialConfig;
 		std::shared_ptr<KakuroConfig> currentConfig;
 	
 	private:
+		// Functions to convert between view/controller and model game boards
 		void displayKakuroConfig(const KakuroConfig& c);
 		KakuroConfig configFromDisplay();
-		
-		bool isSolvable();
 	
 	private slots:
+		// Slots to hook into the buttons
 		void loadSlot();
 		void checkSlot();
 		void hintSlot();
 		void solveSlot();
 		void resetSlot();
 		
+		// A slot for combo box updating
 		void comboBoxUpdatedSlot();
 		
 	public:
+		// Our simple yet effective constructor
 		PuzzleWindow();
 };
 
