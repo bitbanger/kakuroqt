@@ -168,12 +168,20 @@ void PuzzleWindow::loadSlot() {
 }
 
 void PuzzleWindow::checkSlot() {
+	if(currentConfig == nullptr) {
+		return;
+	}
+	
 	string msg = (isSolvable() ? "Solvable!" : "Not solvable :(");
 	
 	QMessageBox::information(this, "Solvable?", QString(msg.c_str()));
 }
 
 void PuzzleWindow::hintSlot() {
+	if(currentConfig == nullptr) {
+		return;
+	}
+	
 	Solver<KakuroConfig> solver(currentConfig);
 	
 	if(solver.isFailure()) {
@@ -195,6 +203,10 @@ void PuzzleWindow::hintSlot() {
 }
 
 void PuzzleWindow::solveSlot() {
+	if(currentConfig == nullptr) {
+		return;
+	}
+	
 	Solver<KakuroConfig> solver(currentConfig);
 	
 	if(solver.isFailure()) {
@@ -207,6 +219,10 @@ void PuzzleWindow::solveSlot() {
 }
 
 void PuzzleWindow::resetSlot() {
+	if(currentConfig == nullptr) {
+		return;
+	}
+	
 	currentConfig = make_shared<KakuroConfig>(*initialConfig);
 	displayKakuroConfig(*currentConfig);
 }
