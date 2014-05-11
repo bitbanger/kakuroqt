@@ -59,7 +59,7 @@ class Partitioner {
 		// Determines if a vector contains any contiguous duplicates
 		// Given the construction of the partitioning algorithm, duplicates will always be contiguous
 		bool isUnique(const vector<int>& vec) {
-			for(int i = 1; i < vec.size(); ++i) {
+			for(unsigned i = 1; i < vec.size(); ++i) {
 				if(vec[i] == vec[i - 1]) return false;
 			}
 			
@@ -91,7 +91,7 @@ class Partitioner {
 				for(vector<int>& recPart : recParts) {
 					recPart.push_back(i);
 					
-					auto s1 = recPart.size();
+					int s1 = recPart.size();
 					
 					if(isUnique(recPart) && s1 == num) {
 						result.push_back(recPart);
