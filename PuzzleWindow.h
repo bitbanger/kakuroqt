@@ -31,7 +31,6 @@ class PuzzleWindow : public QWidget {
 		QPushButton* hintButton;
 		QPushButton* solveButton;
 		QPushButton* resetButton;
-		QPushButton* undoButton;
 	
 	private:
 		std::shared_ptr<KakuroConfig> initialConfig;
@@ -49,9 +48,8 @@ class PuzzleWindow : public QWidget {
 		void hintSlot();
 		void solveSlot();
 		void resetSlot();
-		void undoSlot();
 		
-		void comboBoxUpdatedSlot(int newIndex);
+		void comboBoxUpdatedSlot();
 		
 	public:
 		PuzzleWindow();

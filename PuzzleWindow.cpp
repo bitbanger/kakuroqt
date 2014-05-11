@@ -53,21 +53,18 @@ PuzzleWindow::PuzzleWindow() : comboModel(new QStringListModel(this)) {
 	hintButton = new QPushButton("Hint", this);
 	solveButton = new QPushButton("Solve", this);
 	resetButton = new QPushButton("Reset", this);
-	undoButton = new QPushButton("Undo", this);
 	
 	connect(loadButton, SIGNAL(clicked()), this, SLOT(loadSlot()));
 	connect(checkButton, SIGNAL(clicked()), this, SLOT(checkSlot()));
 	connect(hintButton, SIGNAL(clicked()), this, SLOT(hintSlot()));
 	connect(solveButton, SIGNAL(clicked()), this, SLOT(solveSlot()));
 	connect(resetButton, SIGNAL(clicked()), this, SLOT(resetSlot()));
-	connect(undoButton, SIGNAL(clicked()), this, SLOT(undoSlot()));
 	
 	buttonLayout->addWidget(loadButton);
 	buttonLayout->addWidget(checkButton);
 	buttonLayout->addWidget(hintButton);
 	buttonLayout->addWidget(solveButton);
 	buttonLayout->addWidget(resetButton);
-	buttonLayout->addWidget(undoButton);
 	
 	buttonBox->setLayout(buttonLayout);
 	
@@ -107,7 +104,7 @@ void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
 				QComboBox* combo = new QComboBox;
 				combo->setModel(comboModel);
 				combo->setCurrentIndex(c.value());
-				connect(combo, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxUpdatedSlot(int)));
+				connect(combo, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxUpdatedSlot()));
 				gridLayout->addWidget(combo, i, j);
 			} else {
 				ostringstream oss;
@@ -158,7 +155,6 @@ void PuzzleWindow::loadSlot() {
 	
 	if(!file.good()) {
 		file.close();
-		QMessageBox::information(this, "File Loading Error", "Couldn't load the file. Sorry about that!");
 		return;
 	}
 	
@@ -215,11 +211,7 @@ void PuzzleWindow::resetSlot() {
 	displayKakuroConfig(*currentConfig);
 }
 
-void PuzzleWindow::undoSlot() {
-	QMessageBox::information(this, "title", "info");
-}
-
-void PuzzleWindow::comboBoxUpdatedSlot(int newIndex) {
+void PuzzleWindow::comboBoxUpdatedSlot() {
 	currentConfig = make_shared<KakuroConfig>(configFromDisplay());
 }
 
