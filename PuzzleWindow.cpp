@@ -172,9 +172,17 @@ void PuzzleWindow::checkSlot() {
 		return;
 	}
 	
-	string msg = (isSolvable() ? "Solvable!" : "Not solvable :(");
+	Solver<KakuroConfig> solver(currentConfig);
 	
-	QMessageBox::information(this, "Solvable?", QString(msg.c_str()));
+	if(solver.isFailure()) {
+		QMessageBox::information(this, "Solvable?", "The puzzle is not solvable from its current state.");
+	} else {
+		if(currentConfig->isGoal()) {
+			QMessageBox::information(this, "Solvable?", "The puzzle is solved!");
+		} else {
+			QMessageBox::information(this, "Solvable?", "The puzzle is solvable from its current state!");
+		}
+	}
 }
 
 void PuzzleWindow::hintSlot() {
