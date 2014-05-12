@@ -47,6 +47,7 @@ class PuzzleWindow : public QWidget {
 		QPushButton* hintButton;
 		QPushButton* solveButton;
 		QPushButton* resetButton;
+		QPushButton* helpButton;
 	
 	private:
 		// Configuration pointers for keeping track of game state
@@ -65,6 +66,7 @@ class PuzzleWindow : public QWidget {
 		void hintSlot();
 		void solveSlot();
 		void resetSlot();
+		void helpSlot();
 		
 		// A slot for combo box updating
 		void comboBoxUpdatedSlot();

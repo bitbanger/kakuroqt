@@ -63,18 +63,21 @@ PuzzleWindow::PuzzleWindow() : comboModel(new QStringListModel(this)) {
 	hintButton = new QPushButton("Hint", this);
 	solveButton = new QPushButton("Solve", this);
 	resetButton = new QPushButton("Reset", this);
+	helpButton = new QPushButton("Help", this);
 	
 	connect(loadButton, SIGNAL(clicked()), this, SLOT(loadSlot()));
 	connect(checkButton, SIGNAL(clicked()), this, SLOT(checkSlot()));
 	connect(hintButton, SIGNAL(clicked()), this, SLOT(hintSlot()));
 	connect(solveButton, SIGNAL(clicked()), this, SLOT(solveSlot()));
 	connect(resetButton, SIGNAL(clicked()), this, SLOT(resetSlot()));
+	connect(helpButton, SIGNAL(clicked()), this, SLOT(helpSlot()));
 	
 	buttonLayout->addWidget(loadButton);
 	buttonLayout->addWidget(checkButton);
 	buttonLayout->addWidget(hintButton);
 	buttonLayout->addWidget(solveButton);
 	buttonLayout->addWidget(resetButton);
+	buttonLayout->addWidget(helpButton);
 	
 	buttonBox->setLayout(buttonLayout);
 	
@@ -242,6 +245,21 @@ void PuzzleWindow::resetSlot() {
 	
 	currentConfig = make_shared<KakuroConfig>(*initialConfig);
 	displayKakuroConfig(*currentConfig);
+}
+
+void PuzzleWindow::helpSlot() {
+	string helpString = R"raw(Kakuro has two kinds of cells: sum cells and value cells.
+
+Sum cells are non-selectable and have backslashes in them.
+The number before the backslash is a down sum: all value cells directly below the sum cell must sum to that.
+The number after the backslash is a right sum, and works the same as the down sum, except with value cells to the right.
+
+To solve a Kakuro puzzle, make sure all right sums and all down sums are fulfilled.
+You must also fill in all selectable boxes such that any straight line of adjacent value cells contains no duplicates and no dashes.
+
+Good luck!)raw";
+	
+	QMessageBox::information(this, "Help", QString(helpString.c_str()));
 }
 
 void PuzzleWindow::comboBoxUpdatedSlot() {
