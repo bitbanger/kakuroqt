@@ -94,7 +94,7 @@ PuzzleWindow::PuzzleWindow() : comboModel(new QStringListModel(this)) {
 	
 	setLayout(mainLayout);
 	
-	setWindowTitle("Kakuro");
+	setWindowTitle("Kakuro - Lane Lawley");
 }
 
 void PuzzleWindow::displayKakuroConfig(const KakuroConfig& c) {
